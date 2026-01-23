@@ -26,6 +26,13 @@ while true; do
         "help")
             echo "AskkiBot: I can chat with you! Try saying hello, asking how I am, or asking my name."
             ;;
+        "update"|"update system"|"upgrade"|"upgrade >
+             echo "***System is updateing***"
+             apt upgrade && update -y
+            
+             ;;
+
+
         "exit"|"quit"|"bye")
             echo "AskkiBot: Goodbye! It was nice chatting with you!"
             break
@@ -35,3 +42,4 @@ while true; do
             ;;
     esac
 done
+
