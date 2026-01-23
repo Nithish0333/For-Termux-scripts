@@ -31,6 +31,46 @@ while true; do
              apt upgrade && update -y
             
              ;;
+"add"|"addition"|"sum")
+         echo -n 'Enter the First Number: '
+         read -r a
+         echo -n 'Enter the Second Number: '
+         read -r b
+         echo "Calculating*********"
+         sleep 1
+         echo "$a + $b = $((a+b))"
+         ;;
+      "sub"|"Sub"|"subtraction"|"minus"|"Minus")
+
+printf "Enter the First Number: "
+read -r a
+printf "Enter the Second Number: "
+read -r b
+echo "Calculating*********"
+         sleep 1
+echo "$a - $b = $((a - b))"
+   ;;
+
+"mul"|"multiply"|"multiplication")
+echo -n "Enter the First Number: "
+read a
+echo -n "Enter the Second Number: "
+read b
+echo "Calculating*********"
+         sleep 1
+echo "$a * $b = $((a * b))"
+
+;;
+
+"div"|"division"|"divide")
+echo -n 'Enter the First Number: '
+read a
+echo -n "Enter the Second Number: "
+read b
+echo "Calculating*********"
+         sleep 1
+echo "$a / $b = $((a / b))"
+;;
 
 
         "exit"|"quit"|"bye")
