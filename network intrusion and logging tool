@@ -1,0 +1,28 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+LOG_FILE="$HOME/network_log.txt"
+KNOWN_DEVICES="$HOME/known_macs.txt"
+
+# Ensure known devices file exists
+touch "$KNOWN_DEVICES"
+
+echo "Monitoring Network: $(date)" | tee -a "$LOG_FILE"
+
+while true; do
+    # Get local subnet automatically
+    SUBNET=$(ip route | awk '/default/ {print $3}' | sed 's/\.[0-9]*$/\.0\/24/')
+    
+    # Perform stealth scan
+    mapfile -t CURRENT_DEVICES < <(nmap -sn "$SUBNET" | grep "MAC Address" | awk '{print $3}')
+    
+    for mac in "${CURRENT_DEVICES[@]}"; do
+        if ! grep -q "$mac" "$KNOWN_DEVICES"; then
+            termux-vibrate -d 1000
+            termux-tts-speak "Alert: New device detected with address $mac"
+            echo "$(date): NEW DEVICE $mac" >> "$LOG_FILE"
+            termux-notification --title "Security Alert" --content "New MAC: $mac"
+        fi
+    done
+    
+    sleep 300 # Scan every 5 minutes
+done
