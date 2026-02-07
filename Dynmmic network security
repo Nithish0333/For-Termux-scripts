@@ -1,0 +1,17 @@
+#!/data/data/com.termux/files/usr/bin/bash
+GATEWAY=$(ip route | grep default | awk '{print $3}')
+SUBNET="${GATEWAY%.*}.0/24"
+
+# Initial scan to establish a baseline
+nmap -sn "$SUBNET" -oG - | awk '/Up$/{print $2}' > baseline.txt
+
+while true; do
+  nmap -sn "$SUBNET" -oG - | awk '/Up$/{print $2}' > current.txt
+  NEW_DEVICES=$(grep -Fxvf baseline.txt current.txt)
+  
+  if [ ! -z "$NEW_DEVICES" ]; then
+    termux-notification --title "Alert" --content "New device detected: $NEW_DEVICES"
+    termux-vibrate -d 500
+  fi
+  sleep 60
+done
